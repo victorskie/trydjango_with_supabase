@@ -12,7 +12,7 @@ def home_view(request, *args, **kwargs):
 
     my_list=  article_list
 
-    print(id)
+
     context = {
         "my_list": my_list,
         "title": article_obj.title,
