@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 # from .forms import AriticleForm
 from .forms import ArticleForm
 from django.http import Http404
+from django.db.models import Q
 
 
 # Create your views here.
@@ -53,20 +54,13 @@ def article_create_view(request):
 
 
 def article_search_view(request):
-    query_dict = request.GET
-    query = query_dict.get("q")
-    article_obj =  None
-
-    try:
-        query = int(query_dict.get("q"))
-    except:
-        query = None
+    query = request.GET.get('q')    
+    qs = Article.objects.all()
 
     if query is not None:
-        article_obj =  Article.objects.get(id=query)
-
+        qs =  Article.objects.search(query=query)
     context = {
-        "object": article_obj 
+        "object_list": qs 
     }
 
     return render(request, "article/search.html", context=context)

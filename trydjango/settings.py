@@ -72,6 +72,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'article',
+    'recipes',
 ]
 
 MIDDLEWARE = [
@@ -117,6 +118,7 @@ WSGI_APPLICATION = 'trydjango.wsgi.application'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
 
 
 DATABASES = {
