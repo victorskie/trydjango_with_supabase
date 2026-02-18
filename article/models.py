@@ -5,6 +5,7 @@ from .utils import slugify_instance_title
 from django.urls import reverse
 from django.db.models import Q
 from django.conf import settings
+
 # Create your models here.
 
 
@@ -48,8 +49,7 @@ class Article(models.Model):
     objects=ArticleManager()
 
     def get_absolute_url(self):
-        # return f"/articles/{self.slug}/"
-        return reverse("article-detail", kwargs={"slug": self.slug})
+        return reverse("articles:detail", kwargs={"slug": self.slug})
 
     def save(self, *args, **kwargs):
         # if self.slug is None:
