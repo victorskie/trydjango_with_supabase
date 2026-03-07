@@ -4,8 +4,8 @@ from .models import Recipe, RecipeIngredient
 class RecipeForm(forms.ModelForm):
     error_css_class = 'error-field'
     required_css_class = 'required-field'
-    name = forms.CharField(help_text='this is your help!' )
-    description = forms.CharField(widget=forms.Textarea( attrs={"rows": "3"}))
+    name = forms.CharField(help_text='this is your help!  <a href="/contact">Contact us</a>' )
+    # description = forms.CharField(widget=forms.Textarea( attrs={"rows": "3"}))
     class Meta:
         model = Recipe
         fields = ['name', 'description', 'directions']
@@ -19,7 +19,7 @@ class RecipeForm(forms.ModelForm):
             self.fields[str(field)].widget.attrs.update(
                 new_data
             )
-        self.fields['name'].label = ''
+        self.fields['name'].label = 'Name'
         self.fields['name'].widget.attrs.update({'class': 'form-control-2'})
         self.fields['description'].widget.attrs.update({'rows': '4'})
 

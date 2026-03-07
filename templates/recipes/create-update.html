@@ -18,39 +18,7 @@
 {% endif %}
 
 <div style="margin-top: 30px;" >
-    <form action="."  method="POST" hx-post='.'>
-        {% csrf_token %}
-        <!-- {{form.as_p}} -->
-        {% for field in form %}
-        <div class="{% if field.field.required %}{{ form.required_css_class }}{% endif %}" >
-            {{ field.errors }}
-            {{ field.label_tag }} {{ field }}
-            {% if field.help_text %}
-                <p class="help"> {{ field.help_text|safe }} </p>
-            {% endif %}
-        </div>
-        {% endfor %}
-
-        
-        {% if formset %}
-        <h3>ingredients</h3>
-        {{ formset.management_form }}
-            {% for form in formset %}
-                <div class="ingredient-form" >
-                    {{ form.as_p }}
-                </div>
-            {% endfor %}
-       <div id="ingredient-form-list" ></div>
-
-            <div id="empty-form" class="hidden" > {{ formset.empty_form.as_p }} </div>
-            <button id="add-more" type="button" >Add more</button>
-        {% endif %}
- 
-
-
-        <button  style="margin-top: 10px;" type="submit"> Save</button>
-
-    </form>
+    {% include 'recipes/partials/forms.html' %}
 </div>
 
 <script>
