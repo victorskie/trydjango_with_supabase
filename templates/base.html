@@ -1,20 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js"></script>
-</head>
-<body>
-    <h1>Hello ella</h1>
-    <form  action='/articles/' >
-        <input type='text' name='q' /> 
-        <input type='submit' /> 
-    </form>
+<html>
+    <head>
+        <script src="https://unpkg.com/htmx.org@1.5.0"></script>
+        <style>
+            .htmx-indicator {
+                display: none;
+            }
+            .htmx-request .htmx-indicator {
+                display: inline;
+            }
+            .htmx-inverted-indicator {
+                display: inline;
+            }
+            .htmx-request .htmx-inverted-indicator {
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Hello World</h1>
+        <form action='/articles/' method='GET'>
+            <input type='text' name='q' />
+            <input type='submit' />
+        </form>
 
-    {% block content %}
-    <h1>this will not show</h1>
-    {% endblock content %}
-</body>
+        {% block content %}
+        <h3>This will be replaced</h3>
+        {% endblock content %}
+
+    </body>
 </html>
