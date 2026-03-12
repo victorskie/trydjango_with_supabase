@@ -21,7 +21,7 @@ def recipe_detail_view(request, id=None):
     hx_url = reverse("recipes:hx-detail", kwargs={"id": id})
     obj = get_object_or_404(Recipe, id=id, user=request.user)
     context ={ 
-        "object": obj
+        "hx_url": hx_url
     }
     return render(request, "recipes/detail.html", context)
 
@@ -29,7 +29,7 @@ def recipe_detail_view(request, id=None):
 @login_required
 def recipe_detail_hx_view(request, id):
     try:
-        obj = Recipe.object.get(id=id, user=request.user)
+        obj = Recipe.objects.get(id=id, user=request.user)
     except:
         obj=None
     if obj is None:
