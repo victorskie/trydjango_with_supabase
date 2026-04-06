@@ -1,4 +1,6 @@
 # Environment variables
+staticfiles-cdn/
+
 .env
 
 # Python
