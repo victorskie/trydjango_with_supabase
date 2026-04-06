@@ -28,7 +28,7 @@ from .views import home_view
 urlpatterns = [
     path('', home_view), # index / home / root 
     path('pantry/recipes/', include('recipes.urls')),
-    path('articles/', include('articles.urls')),
+    path('articles/', include('article.urls')),
     path('search/', search_view, name='search'),
     path('admin/', admin.site.urls),
     path('login/', login_view),
