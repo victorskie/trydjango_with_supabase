@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_htmx',
+    'storages',
     'article',
     'recipes',
     'search',  # ← was missing
@@ -89,10 +90,13 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_ROOT = BASE_DIR / "staticfiles-cdn"
-
+MEDIA_ROOT = BASE_DIR / "staticfiles-cdn" / "uploads" 
+from cdn.conf import * # noqa
 
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 STATIC_URL = 'static/'
+
+

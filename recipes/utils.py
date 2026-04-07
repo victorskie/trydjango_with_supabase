@@ -1,5 +1,6 @@
 from fractions import Fraction
-from typing import Any
+from typing import Any, List 
+from pint import UnitRegistry
 
 # def number_str_to_float(amount_str:str) -> (any, bool):
 def number_str_to_float(amount_str: str) -> tuple[Any, bool]:
@@ -30,3 +31,59 @@ def number_str_to_float(amount_str: str) -> tuple[Any, bool]:
     return number_as_float, success
 
 
+def parse_paragraph_to_recipe_line(paragraph):
+    paragraph = paragraph.replace("\n", " ").replace("\f", " ").replace("\t", " ")
+    results = []
+    current_str = ""
+    for line in paragraph.split(" "):
+        val, success = number_str_to_float(line)
+        if success:
+            # print(line, val)
+            if current_str != "":
+                results.append(current_str.strip())
+            current_str = f"{line}"
+        else:
+            current_str += f" {line}"
+    
+    # Adding this to catch the very last ingredient in the loop
+    if current_str != "":
+        results.append(current_str.strip())
+        
+    return results
+
+
+def convert_to_qty_units(results: List[str]):
+    ureg = UnitRegistry()
+    dataset = []
+    for i, x in enumerate(results):
+        words = x.split(" ")
+        qty = None
+        qty_raw = None
+        units = None
+        other = []
+        for word in words:
+            val, success = number_str_to_float(word)
+            if success:
+                qty = val
+                qty_raw = word
+                continue
+            
+            iter_unit = None
+            try:
+                iter_unit = str(ureg[word].units)
+            except:
+                pass
+            
+            if units is None and iter_unit is not None:
+                units = iter_unit
+            else:
+                other.append(word)
+                
+        data = {
+            "qty": qty,
+            "qty_raw": qty_raw,
+            "unit": units,
+            "other": " ".join(other)
+        }
+        dataset.append(data)
+    return dataset

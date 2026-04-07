@@ -4,8 +4,10 @@ from django.urls import reverse
 from django.http import HttpResponse, Http404
 from django.shortcuts import redirect, render, get_object_or_404
 
-from .forms import RecipeForm, RecipeIngredientForm
+
+from .forms import RecipeForm, RecipeIngredientForm, RecipeIngredientImageForm
 from .models import Recipe, RecipeIngredient
+from .services import extract_text_via_ocr_service
 # CRUD -> Create Retrieve Update & Delete
 
 @login_required
@@ -164,3 +166,53 @@ def recipe_ingredient_update_hx_view(request, parent_id=None, id=None):
         context['object'] = new_obj
         return render(request, "recipes/partials/ingredient-inline.html", context) 
     return render(request, "recipes/partials/ingredient-form.html", context) 
+
+
+# @login_required
+# def recipe_ingredient_image_upload_view(request, parent_id=None):
+#     try:
+#         parent_obj = Recipe.objects.get(id=parent_id, user=request.user)
+#     except:
+#         parent_obj = None
+#     if parent_obj is None:
+#         raise Http404
+        
+#     # Notice request.FILES is required to grab the actual image data
+#     form = RecipeIngredientImageForm(request.POST or None, request.FILES or None)
+#     if form.is_valid():
+#         obj = form.save(commit=False)
+#         obj.recipe = parent_obj
+#         # obj.recipe_id = parent_id # This also works
+#         obj.save()
+#         # For now, it just renders the same form again upon success
+#     return render(request, "image-form.html", {"form":form})
+
+
+@login_required
+def recipe_ingredient_image_upload_view(request, parent_id=None):
+    # 1. Define the default template
+    template_name = "recipes/upload-image.html"
+    
+    # 2. Change the template if the request comes from HTMX
+    if request.htmx:
+        template_name = "recipes/partials/image-upload-form.html"
+        
+    try:
+        parent_obj = Recipe.objects.get(id=parent_id, user=request.user)
+    except:
+        parent_obj = None
+    if parent_obj is None:
+        raise Http404
+        
+    form = RecipeIngredientImageForm(request.POST or None, request.FILES or None)
+    if form.is_valid():
+        obj = form.save(commit=False)
+        obj.recipe = parent_obj
+        obj.save()
+        
+        result = extract_text_via_ocr_service(obj.image)
+        obj.extracted = result
+        obj.save()
+
+
+    return render(request, template_name, {"form":form})

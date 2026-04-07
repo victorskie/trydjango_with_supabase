@@ -1,29 +1,13 @@
 from django.contrib import admin
-from .models import RecipeIngredient, Recipe
+# from .models import RecipeIngredient, Recipe
+from .models import RecipeIngredient, Recipe, RecipeIngredientImage
 from django.contrib.auth import get_user_model
 
 
 User = get_user_model()
-# admin.site.unregister(User)
-
-# admin.site.register(RecipeIngredient)
 
 
-# class UserInline(admin.TabularInline):
-#     model = User
-
-
-# class RecipeInline(admin.StackedInline):
-#     model = Recipe
-#     extra = 0
-
-# class UserAdmin(admin.ModelAdmin):
-#     inlines = [RecipeInline]
-#     list_display = ['username']
-
-# admin.site.register(User, UserAdmin)
-
-
+admin.site.register(RecipeIngredientImage)
 
 class RecipeIngredientInline(admin.StackedInline):
     model = RecipeIngredient
