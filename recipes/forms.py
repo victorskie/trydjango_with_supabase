@@ -8,6 +8,7 @@ class RecipeIngredientImageForm(forms.ModelForm):
     class Meta:
         model = RecipeIngredientImage
         fields = ['image']
+        labels = {"image": "Extract via Image Upload"}
 
 class RecipeForm(forms.ModelForm):
     error_css_class = 'error-field'

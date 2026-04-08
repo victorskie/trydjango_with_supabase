@@ -70,7 +70,8 @@ def convert_to_qty_units(results: List[str]):
             
             iter_unit = None
             try:
-                iter_unit = str(ureg[word].units)
+                # 1. We added .lower() here
+                iter_unit = str(ureg[word.lower()].units)
             except:
                 pass
             
@@ -78,12 +79,26 @@ def convert_to_qty_units(results: List[str]):
                 units = iter_unit
             else:
                 other.append(word)
-                
+        
+        # 2. Here is the new logic you were asking about!
+        # It sits completely outside the 'for word in words:' loop,
+        # but stays inside the 'for i, x in enumerate(results):' loop.
+        name = ""
+        other_txt = " ".join(other)
+        description = None
+        if len(other_txt) < 220:
+            name = other_txt
+        elif len(other_txt) >= 220:
+            name = other_txt[:220]
+            description = other_txt[220:]
+
         data = {
-            "qty": qty,
-            "qty_raw": qty_raw,
+            "quantity_as_float": qty,
+            "quantity": qty_raw,
             "unit": units,
-            "other": " ".join(other)
+            "name": name,
+            "description": description
         }
         dataset.append(data)
+        
     return dataset
