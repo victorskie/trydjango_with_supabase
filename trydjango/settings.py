@@ -24,7 +24,9 @@ INSTALLED_APPS = [
     'storages',
     'article',
     'recipes',
-    'search',  # ← was missing
+    'search',  
+    'meals',
+    'inventory',
 ]
 
 MIDDLEWARE = [
